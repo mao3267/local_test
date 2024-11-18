@@ -20,35 +20,30 @@ image = ImageSpec(
     builder="default",
 )
 
+@dataclass 
+class Parent:
+    a: int
+
+@dataclass
+class Child(Parent):
+    b: int
+
 @dataclass
 class Other:
-    a: int
-    b: str
-
-@dataclass
-class A:
-    a: int
-
-@dataclass
-class B:
-    b: A
-
-@dataclass
-class C:
-    b: Other
+    c: str
 
 @task(container_image=image)
-def parent_task() -> B:
-    return B(b=A(a=1))
+def foo() -> Child:
+    return Child(a=1, b=2)
 
 @task(container_image=image)
-def my_task(input: Union[C, Other]):
+def my_task(input: Union[Parent, Other]):
     print(input)
 
 @workflow
 def wf():
-    p = parent_task()
-    my_task(p)
+    a = foo()
+    my_task(a)
 
 if __name__ == "__main__":
     wf()

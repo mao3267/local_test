@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Union
+from typing import Union, List
 from flytekit import task, workflow
 from flytekit.image_spec import ImageSpec
 
@@ -22,12 +22,12 @@ image = ImageSpec(
 
 @dataclass
 class Other:
-    a: int
-    b: str
+    a: List[str]
+    
 
 @dataclass
 class A:
-    a: int
+    a: List[int]
 
 @dataclass
 class B:
@@ -39,7 +39,7 @@ class C:
 
 @task(container_image=image)
 def parent_task() -> B:
-    return B(b=A(a=1))
+    return B(b=A(a=[1]))
 
 @task(container_image=image)
 def my_task(input: Union[C, Other]):

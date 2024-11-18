@@ -33,8 +33,8 @@ class Other:
     c: str
 
 @task(container_image=image)
-def foo() -> Child:
-    return Child(a=1, b=2)
+def foo() -> Parent:
+    return Parent(a=1)
 
 @task(container_image=image)
 def my_task(input: Union[Parent, Other]):
